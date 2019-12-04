@@ -1,0 +1,22 @@
+{% load staticfiles %}
+<div style="background-image: url({% static 'images/hospitalbackground.jpg' %});height: 100%">
+{% include "adminlogin_menu.html" %}
+<br/><br/><br/>
+
+<table align="center" border="2">
+    <tr style="color: orangered">
+        <th width="100" height="40">Employee ID</th>
+        <th width="150">Employee Name</th>
+        <th width="190">Employee Designation</th>
+        <th width="180">Employee Contact</th>
+    </tr>
+    {%  for x in data %}
+        <tr>
+            <td height="30">{{x.emp_id}}</td>
+            <td>{{x.name}}</td>
+            <td>{{x.designation}}</td>
+            <td>{{x.contact}}</td>
+    </tr>
+    {% endfor %}
+</table>
+</div>

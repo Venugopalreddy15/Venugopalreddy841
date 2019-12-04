@@ -1,0 +1,40 @@
+{% load staticfiles %}
+<div style="background-image: url({% static 'images/hospitalbackground.jpg' %});height: 100%">
+{% include 'login_menu.html' %}
+<br/><br/>
+
+
+
+
+<h3 align="center" style="color: orangered"><ins>DOCTOR LOGIN</ins></h3>
+<br/>
+
+<form action="{% url 'doctor_login' %}" method="post">
+    {% csrf_token %}
+<table align="center" border="0">
+    <tr>
+        <th>USER ID :</th>
+        <td><input type="text" name="username" required></td>
+    </tr>
+    <tr><th><br></th></tr>
+    <tr>
+        <th>PASSWORD :</th>
+        <td><input type="password" name="password" required></td>
+    </tr>
+    <tr><th><br></th></tr>
+    <tr>
+        <th colspan="2"><button type="submit">Login</button></th>
+    </tr>
+</table></form>
+
+
+
+
+
+<br/><br/>
+{% for x in messages %}
+
+    <h4 align="center" style="color: red">{{ x }}</h4>
+
+{% endfor %}
+</div>

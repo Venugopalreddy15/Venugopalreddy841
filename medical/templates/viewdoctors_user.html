@@ -1,0 +1,21 @@
+
+{% include "menu_user.html" %}
+<br/><br/>
+
+<table align="center" border="2">
+    <tr style="color: orangered">
+        <th width="100" height="40">Doctor ID</th>
+        <th width="150">Doctor NAME</th>
+        <th width="190">Doctor SPECIALIZATION</th>
+        <th width="180">Doctor CONTACT</th>
+    </tr>
+    {% for x in object_list %}
+        <tr>
+            <td height="30">{{x.doc_id}}</td>
+            <td>{{x.name}}</td>
+            <td>{{x.specialization}}</td>
+            <td>{{x.contact}}</td>
+    </tr>
+    {% endfor %}
+</table>
+

@@ -1,0 +1,20 @@
+{#<form method="post">#}
+{#    {% csrf_token %}#}
+{#<table align="center" border="1">#}
+{#    <tr><th>PATIENT ID</th>#}
+{#    <th>NAME</th></tr>#}
+{#    <tr ><td align="center">{{ object.patient_id }}</td>#}
+{#    <td align="center">{{ object.patient_name }}</td></tr>#}
+{#    <tr><td colspan="2" width="500" align="center" height="70">DO YOU ALREADY CHECKED THIS PATIENT</td></tr>#}
+{#    <tr ><th colspan="2">  <button type="submit">YES</button> </th></tr>#}
+{#</table>#}
+{#</form>#}
+{% load staticfiles %}
+<div style="background-image: url({% static 'images/hospitalbackground.jpg' %});height: 100%">
+ {% include 'doctorlogin_menu.html' %}
+<form method="post">
+    {% csrf_token %}
+  <h3 align="center">{{ form.as_p }}</h3>
+   <h3 align="center"><button type="submit">Update</button></h3>
+</form>
+</div>

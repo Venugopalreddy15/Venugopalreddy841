@@ -1,0 +1,29 @@
+{#<form method="post">#}
+{#    {% csrf_token %}#}
+{#    {{ form.as_p }}#}
+{#</form>#}
+{% include "menu.html" %}
+
+<br/><br/><br/>
+<form method="post">
+    {% csrf_token %}
+    <table align="center" border="2">
+    <tr><th>PATIENT ID :</th>
+    <th>{{ form.patient_id }}</th></tr>
+
+        <tr><th>PATIENT NAME :</th>
+    <th>{{ form.patient_name }}</th></tr>
+
+        <tr><th>DISEASE :</th>
+    <th>{{ form.disease }}</th></tr>
+
+        <tr><th>PATIENT CONTACT NO :</th>
+    <th>{{ form.patient_contact_no }}</th></tr>
+
+        <tr><th>REQUIRED DOCTOR :</th>
+            <th>{{ form.doc_id }}</th></tr>
+
+        <tr><th colspan="2" align="center"><button type="submit">SAVE</button> </th></tr>
+
+    </table>
+</form>

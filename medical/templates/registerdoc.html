@@ -1,0 +1,59 @@
+{% load staticfiles %}
+<div style="background-image: url({% static 'images/hospitalbackground.jpg' %});height: 100%">
+{% include "adminlogin_menu.html" %}
+<br/><br/><br/><br/>
+
+{#<form method="post">#}
+{#    {% csrf_token %}#}
+{#{{ form.as_p }}#}
+{#<button type="submit">Save</button>#}
+{#</form>#}
+
+
+<form method="post">
+    {% csrf_token %}
+
+    <h3 align="center" style="color: orangered"><ins>DOCTOR REGISTRATION</ins></h3>
+    <br/>
+
+    <table align="center" border="0">
+
+        <tr>
+            <th>Doctor ID</th>
+            <td>{{ form.doc_id }}</td>
+        </tr>
+        <tr>
+            <th>Doctor Name</th>
+            <td>{{ form.name }}</td>
+        </tr>
+        <tr>
+            <th>Doctor Specialization</th>
+            <td>
+                <select {{ form.specialization }}>
+                    <option>Pediatrician</option>
+                    <option>Neurologist</option>
+                    <option>Psychiatrist</option>
+                    <option>Surgeon</option>
+                    <option>Dermatologist</option>
+                    <option>Cardiologist</option>
+                    <option>Orthopedist</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Doctor Contact</th>
+            <td>{{ form.contact }}</td>
+        </tr>
+        <tr>
+            <th>Doctor Login Password</th>
+            <td>{{ form.password }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.errors }}</td>
+        </tr>
+        <tr>
+            <th colspan="2"><button type="submit">Save</button> </th>
+        </tr>
+    </table>
+</form>
+</div>

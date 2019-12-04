@@ -1,0 +1,44 @@
+{#<table align="center" border="2">#}
+{#    <tr>#}
+{#        <th>Doctor ID</th>#}
+{#        <th>Doctor NAME</th>#}
+{#        <th>Doctor SPECIALIZATION</th>#}
+{#        <th>Doctor CONTACT</th>#}
+{#    </tr>#}
+{##}
+{#        <tr>#}
+{#            <th>{{data.doc_id}}</th>#}
+{#            <th>{{data.name}}</th>#}
+{#            <th>{{data.specialization}}</th>#}
+{#            <th>{{data.contact}}</th>#}
+{##}
+{#    </tr>#}
+{##}
+{#</table>#}
+{% load staticfiles %}
+<div style="background-image: url({% static 'images/hospitalbackground.jpg' %});height: 100%">
+
+ {% include 'doctorlogin_menu.html' %}
+<h3 align="center" style="color: brown">WELCOME Dr. {{ data.name }}</h3>
+<br/><br/>
+
+<h4 align="center" style="color: deeppink"><ins>YOUR PATIENT LIST</ins></h4>
+
+<br/><br/>
+
+
+    <table align="center" border="2"width="700" height="150"><tr style="color: firebrick"><th>PATIENT NAME</th>
+        <th>PATIENT PROBLEM</th>
+    <th width="150">CONTACT</th><th>STATUS OF PATIENT</th></tr>
+        {% for x  in patient %}
+            <tr><td align="center">{{ x.patient_name }}</td>
+                <th>{{ x.disease }}</th>
+            <td align="center">{{ x.patient_contact_no }}</td>
+            <td align="center"><a href="/delete_patient{{ x.patient_id }}/">{{x.status}}</a> </td>
+{#             <td align="center"><a href="{% url 'delete_patient' %}{{ x.patient_id }}">YES</a> </td>#}
+            </tr>
+        {% endfor %}
+
+    </table>
+</div>
+

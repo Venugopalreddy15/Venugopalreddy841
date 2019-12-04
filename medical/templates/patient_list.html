@@ -1,0 +1,27 @@
+
+
+<table align="center" border="2">
+    <tr><th>PATIENT ID</th>
+    <th>PATIENT NAME</th>
+    <th>PATIENT DISEASE</th>
+    <th>PATIENT CONTACT NO</th>
+    <th>ASSIGNED TO</th></tr>
+
+
+
+{% for x in object_list %}
+
+
+<tr><th>{{x.patient_id}}</th>
+    <th>{{x.patient_name}}</th>
+    <th>{{x.disease}}</th>
+    <th>{{x.patient_contact_no}}</th>
+<th>{% for y in x.doc_id.all %}{{ y }}
+    <br/>
+    {% endfor %}</th>
+</tr>
+
+{% endfor %}
+
+</table>
+

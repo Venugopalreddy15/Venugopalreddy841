@@ -1,0 +1,44 @@
+{% load staticfiles %}
+<div style="background-image: url({% static 'images/hospitalbackground.jpg' %});height: 100%">
+{% include "adminlogin_menu.html" %}
+<br/><br/><br/>
+
+<form action="{% url 'saveemp' %}" method="post">
+    {% csrf_token %}
+
+
+        <h3 align="center" style="color: orangered">REGISTER EMPLOYEE</h3>
+
+<table align="center" border="0">
+
+    <tr>
+        <th>Employee ID</th>
+        <td><input type="number" name="empid" required></td>
+    </tr>
+    <tr>
+        <th>Employee Name</th>
+        <td><input type="text" name="empname" required></td>
+    </tr>
+    <tr>
+        <th>Employee Designation</th>
+        <td><select name="empdesignation">
+            <option>Receptionist</option>
+            <option>Nurse</option>
+            <option>Wardboy</option>
+            <option>Sweeper</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <th>Employee Contact</th>
+        <td><input type="number" name="empcontact" required></td>
+    </tr>
+    <tr>
+        <th>Employee Password</th>
+        <td><input type="password" name="emppassword" required></td>
+    </tr>
+    <tr>
+        <th colspan="2"><button type="submit">Save</button></th>
+    </tr>
+</table></form>
+</div>
