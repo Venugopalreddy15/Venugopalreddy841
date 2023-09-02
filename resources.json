@@ -1,0 +1,147 @@
+{
+    "resources": [
+        {
+            "name": "localService/mockserver.js"
+        },
+        {
+            "name": "manifest.json"
+        },
+        {
+            "name": "model/models.js"
+        },
+        {
+            "name": "model/formatter.js"
+        },
+        {
+            "name": "i18n/i18n.properties",
+            "raw": "i18n/i18n.properties"
+        },
+        {
+            "name": "controller/TimeSheet.controller.js"
+        },
+        {
+            "name": "controller/NotFound.controller.js"
+        },
+        {
+            "name": "controller/ErrorHandler.js"
+        },
+        {
+            "name": "controller/BaseController.js"
+        },
+        {
+            "name": "controller/App.controller.js"
+        },
+        {
+            "name": "Component.js"
+        },
+        {
+            "name": "manifest-bundle.zip"
+        },
+        {
+            "name": "Component-preload.js",
+            "merged": true
+        },
+        {
+            "name": "model/models-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "model/formatter-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "localService/mockserver-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "controller/TimeSheet-dbg.controller.js",
+            "isDebug": true
+        },
+        {
+            "name": "controller/NotFound-dbg.controller.js",
+            "isDebug": true
+        },
+        {
+            "name": "controller/ErrorHandler-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "controller/BaseController-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "controller/App-dbg.controller.js",
+            "isDebug": true
+        },
+        {
+            "name": "Component-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "../../sap-ui-version.json"
+        },
+        {
+            "name": "neo-app.json"
+        },
+        {
+            "name": "di.code-validation.core_issues.json"
+        },
+        {
+            "name": "view/TimeSheet.view.xml"
+        },
+        {
+            "name": "view/ObjectNotFound.view.xml"
+        },
+        {
+            "name": "view/NotFound.view.xml"
+        },
+        {
+            "name": "view/App.view.xml"
+        },
+        {
+            "name": "localService/metadata.xml"
+        },
+        {
+            "name": "fragment/Projectpopover.fragment.xml"
+        },
+        {
+            "name": "fragment/ProjectVHDialog.fragment.xml"
+        },
+        {
+            "name": "fragment/Notes.fragment.xml"
+        },
+        {
+            "name": "fragment/NewProjectCreate.fragment.xml"
+        },
+        {
+            "name": "fragment/NewProject.fragment.xml"
+        },
+        {
+            "name": "fragment/Help.fragment.xml"
+        },
+        {
+            "name": "css/style.css"
+        },
+        {
+            "name": "Images/dsi5.jpg"
+        },
+        {
+            "name": "Images/ds8.png"
+        },
+        {
+            "name": "Images/ds6.jpg"
+        },
+        {
+            "name": "Images/download.png"
+        },
+        {
+            "name": "Images/download.jpg"
+        },
+        {
+            "name": "Images/1.jpg"
+        },
+        {
+            "name": "index.html"
+        }
+    ]
+}
