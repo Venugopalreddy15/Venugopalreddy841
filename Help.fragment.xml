@@ -1,0 +1,7 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<Popover placement="Top" contentWidth="300px"  title="Help" >
+	<Title text="Info"/>
+	</Popover>
+</core:FragmentDefinition>

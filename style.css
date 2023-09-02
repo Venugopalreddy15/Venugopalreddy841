@@ -1,0 +1,125 @@
+/* Enter your custom styles here */
+.listborder{
+	border-style: solid  !important;
+}
+.border{
+border-bottom-style: None;
+}
+.background{
+	background-color: white;
+}
+.textColor{
+	color:#3498DB !important;
+}
+.startEnddateColor{
+		color: #00004d  !important;
+		font-size:18px !important;
+}
+/*.Mtable .MInputClass .sapMInputBaseInner:not(.sapMInputBaseReadonlyInner), .sapMInputBaseInner:not(.sapMInputBaseReadonlyInner) {*/
+/*    outline: none;*/
+/*    font-size: 0.70rem !important;*/
+    
+/*}*/
+
+/*.MInputClass .sapMInputBaseInner:not(.sapMInputBaseReadonlyInner), .sapMInputBaseInner:not(.sapMInputBaseReadonlyInner){*/
+	/*width:3.35em !important;   */
+.mtable .MInputClass input{
+    font-size: 0.70rem !important;
+}
+
+/*.sapMListTblCell .TotalColor{*/
+/*		background-color: #E1ECF3 !important;*/
+/*}*/
+/*.sapUiSizeCompact .sapMListTblCell */
+.sapUiSizeCompact .sapMListTblCell .TotalColor{
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    vertical-align: middle;
+    background-color: #E1ECF3 !important;
+    
+}
+.columnStyle{
+	 background-color:red !important;
+}
+.highlight{
+	 background-color: #E1ECF3 !important;
+}
+
+ .table_fotter .InputClass input{
+    border: none !important;
+    /*font-size: 1rem !important;*/
+}
+/*[data-InputClass="None"].table_fotter .InputClass input{*/
+/*    border: none !important;*/
+/*}*/
+
+[data-InputClass="Error"]{
+	 border: 1px solid red !important;
+}
+[data-InputClass="Warning"]{
+	 border: 1px solid orange !important;
+}
+.table_fotter .InputClass1 input{
+    /* outline: none; */
+    border: none !important;
+     background: #B7CDE3 !important;
+    font-weight: bold!important;
+    font-size: 0.75rem !important;
+}
+.table_fotter .sTotalColor{
+ font-weight: bold!important;
+}
+/*#8fccff    c9cfe8*/
+ .SubTotalclass  tr th:nth-last-child(3),
+ .SubTotalclass tr td:nth-last-child(3){
+	background: red !important;
+  color:white;
+}
+
+ .backgroundProjectSearch{
+ 	background-color: #E1ECF3 !important;
+ }
+ 
+[data-backgroundColor="one"] {
+background-color:#E1ECF3 !important;
+}
+
+.backgroundcolor{
+	background-color:#E1ECF3 !important;
+}
+
+ 
+ .table_fotter  tr th:nth-last-child(3),
+ .table_fotter  tr td:nth-last-child(3){
+  background: #B7CDE3 !important;
+  color:#fff;
+}
+
+.table_fotter tfoot .sapMListTblFooter{
+	/*background:#efefef !important;*/
+	background:#B7CDE3 !important;
+}
+
+/*#8fccff*/
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

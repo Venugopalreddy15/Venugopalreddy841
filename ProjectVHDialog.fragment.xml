@@ -1,0 +1,16 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		title="Projects"
+		class="sapUiPopupWithPadding"
+		items="{ReportModel>/Sch_ProjectCodeSet}"
+		search="_handleProjectValueHelpSearch"
+		confirm="_handleProjectValueHelpClose"
+		cancel="_handleProjectValueHelpClose">
+		<StandardListItem
+		 
+			title="{ReportModel>ProjectCode}"
+			description="{ReportModel>Txt}" />
+	</SelectDialog>
+</core:FragmentDefinition>

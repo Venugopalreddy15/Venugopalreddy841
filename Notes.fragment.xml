@@ -1,0 +1,26 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<Dialog class="sapUiContentPadding" contentWidth="550px">
+		<customHeader>
+			<Toolbar>
+				<ToolbarSpacer width="3em"/>
+				<Title class="textColor"/>
+				<ToolbarSpacer/>
+				<Button tooltip="{i18n>Cancel}" icon="sap-icon://decline" type="Reject" press="onCancelNotesPress"/>
+			</Toolbar>
+		</customHeader>
+		<content>
+			<TextArea value="{oTimeshetModel>/Notes}" showExceededText="false" maxLength="200" width="100%" rows="5"
+				editable="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X' || ${oTimeshetModel>/user} === 'X' ?false:true}"
+				valueState="{= ${oTimeshetModel>/Notes}.length > 200 ? 'Warning' : 'None' }" valueLiveUpdate="false" liveChange="handleLiveChange"/>
+		</content>
+		<buttons>
+			<Button visible="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X' || ${oTimeshetModel>/user} === 'X' ?false:true}" tooltip="{i18n>Delete}"
+				type="Reject" icon="sap-icon://delete" press="onDeleteNotesPress"/>
+			<Button visible="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X' || ${oTimeshetModel>/user} === 'X' ?false:true}" tooltip="{i18n>Save}"
+				type="Emphasized" icon="sap-icon://save" press="onAddNotesPress"/>
+		</buttons>
+		<!--<endButton>-->
+		<!--	<Button text="{i18n>Cancel}" press="onCancelNotesPress"/>-->
+		<!--</endButton>-->
+	</Dialog>
+</core:FragmentDefinition>

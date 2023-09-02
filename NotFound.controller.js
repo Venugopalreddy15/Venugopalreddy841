@@ -1,0 +1,1 @@
+sap.ui.define(["ProjectTime/ZProjectTime/controller/BaseController"],function(e){"use strict";return e.extend("ProjectTime.ZProjectTime.controller.NotFound",{onLinkPressed:function(){this.getRouter().navTo("worklist")}})});
