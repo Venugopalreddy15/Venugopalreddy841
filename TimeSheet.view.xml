@@ -1,0 +1,625 @@
+<mvc:View controllerName="ProjectTime.ZProjectTime.controller.TimeSheet" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout"
+	xmlns:viz="sap.viz.ui5.controls" xmlns:layout="sap.ui.layout" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:microchart="sap.suite.ui.microchart" xmlns:viz.data="sap.viz.ui5.data" xmlns:core="sap.ui.core">
+	<Page backgroundDesign="Transparent" class="sapUiSizeCompact sapUiContentPadding" showNavButton="false">
+		<!--title="{i18n>ProjectTime} {oTimeshetModel>/StartDateMonth}-{oTimeshetModel>/EndDateMonth} ({i18n>Week} - {oTimeshetModel>/WeekNumber})"-->
+		<Panel>
+			<!--				<Text   text="Alert:  Atlas Project Time sheet app will be moved to a new Time-Card system.-->
+			<!--Starting XXXXXXX, you need to access https://XXXXXX.com to access the new time card entry." class="redText largeText centerText"/>-->
+		
+			<Label text="Alert :" class="redText"/>
+		
+			<Label 
+				text=" Time tracking is moving from ATLAS to TRIDENT Timecard from 1-Oct-2023. Look out for emails from Trident_global@dsi.com to learn more about TRIDENT Timecard." class="blueText" /> 
+				<Label text="Details of your TRIDENT Timecard access will be coming late September.
+				ATLAS time tracking will not be available after 13-Oct-2023." class="yellowText"/>
+					<ToolbarSpacer/>
+				<Label text="Please submit your September timecards by this date." class="whiteText"/>
+			
+		</Panel>
+		<content>
+			<!-- icon="{path: 'oUserModel>/Name', formatter: '.generateAvatar'}"-->
+			<ObjectHeader visible="{= !${device>/system/phone} }" icon="{path: 'oUserModel>/Name', formatter: '.generateAvatar'}"
+				number="{oTimeshetModel>/tableColumns/9/Total} Hrs" iconDensityAware="false" iconAlt="{oUserModel>/Name}" responsive="true"
+				title="{oUserModel>/Name}" condensed="true" intro="{oUserModel>/PositionTitle}{oUserModel>/Department}"
+				numberState="{= ${oTimeshetModel>/tableColumns/9/Total} >= 37.5 ? 'Success' : 'Error' }">
+				<ObjectAttribute text="{oUserModel>/Txt} - CC#{oUserModel>/CostCenter}" title=""/>
+				<!--<ObjectAttribute text="{oUserModel>/CostCenter}" title=""/>-->
+				<ObjectAttribute text="Daiichi Sankyo Inc" title=""/>
+				<statuses>
+					<ProgressIndicator id="idProgressIndicator" width="100%" class="sapUiSmallMarginBottom"
+						percentValue="{ path: 'oTimeshetModel>/tableColumns/9/Total', formatter: '.formatter.FloatProgressIndicator' }"
+						displayValue="{i18n>SavedHour}{oTimeshetModel>/tableColumns/9/Total}/{i18n>TargetPerWeek}" showValue="true"
+						state="{= ${oTimeshetModel>/tableColumns/9/Total} >= 37.5 ? 'Success' : 'Error' }"/>
+				</statuses>
+			</ObjectHeader>
+			<Table id="dtimesheetTable" visible="{= !${device>/system/phone} }" inset="false" items="{ path: 'oTimeshetModel>/tableItems' }"
+				mode="SingleSelectMaster" class="sapUiSizeCompact table_fotter" columns="{path: 'oTimeshetModel>/tableColumns'}">
+				<headerToolbar>
+					<OverflowToolbar>
+						<content>
+							<Button icon="sap-icon://add" type="Emphasized"
+								visible="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X'|| ${oTimeshetModel>/user} === 'X' ? false : true }" tooltip="Add"
+								press="onProjectAddPress"/>
+							<Button icon="sap-icon://delete" type="Reject"
+								visible="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X' || ${oTimeshetModel>/user} === 'X' ? false : true }" tooltip="Delete"
+								press="onProjectDeletePress"/>
+							<Button visible="{= ${oTimeshetModel>/VacationNotesVisible}}"
+								icon="{= ${oTimeshetModel>/VacationNotes} === '' ?'sap-icon://notes':'sap-icon://notification-2'}"
+								type="{= ${oTimeshetModel>/VacationNotes} === '' ?'Accept':'Emphasized'}" tooltip="{i18n>WeeklyNotes}" press="onMainNotePress">
+								<customData>
+									<core:CustomData key="MainNote" value="{oTimeshetModel>/VacationNotes}"/>
+								</customData>
+							</Button>
+							<ToolbarSpacer/>
+						</content>
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+					<!---->
+					<Column minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline"
+						width="{= ${oTimeshetModel>Column} === 'Project Code' || ${oTimeshetModel>Column} === 'Resource Type'?'13em':'6em'}"
+						hAlign="{= ${oTimeshetModel>Column} === 'Project Code' || ${oTimeshetModel>Column} === 'Resource Type'?'Begin':${oTimeshetModel>Column} ==='Project Notes'?'Center':'End' }"
+						class="sapUiSizeCompact">
+						<!--hAlign="{= ${oTimeshetModel>Column} === 'Sub Totals'?'End':'Begin'}"-->
+						<!--hAlign="{= ${oTimeshetModel>Column} === 'Project Code' || ${oTimeshetModel>Column} === 'Resource Type' || ${oTimeshetModel>Column} === 'Sub Totals'|| ${oTimeshetModel>Column} ==='Notes'?'Begin':'End' }">-->
+						<VBox>
+							<Button text="{oTimeshetModel>Column}" press="onMainNotePress" icon="{= ${oNotesModel>/Day01} !== ''?'sap-icon://notification-2':''}"
+								enabled="{= ${oTimeshetModel>/firstTimeUser/Monday} ?false:true}"
+								visible="{= ${oTimeshetModel>Column} === ${oTimeshetModel>/tableColumns/2/Column}}" type="Transparent">
+								<customData>
+									<core:CustomData key="Day01" value="{oNotesModel>/Day01}"/>
+								</customData>
+							</Button>
+							<Button text="{oTimeshetModel>Column}" press="onMainNotePress" enabled="{= ${oTimeshetModel>/firstTimeUser/Tuesday} ?false:true}"
+								icon="{= ${oNotesModel>/Day02} !== ''?'sap-icon://notification-2':''}"
+								visible="{= ${oTimeshetModel>Column} === ${oTimeshetModel>/tableColumns/3/Column}}" type="Transparent">
+								<customData>
+									<core:CustomData key="Day02" value="{oNotesModel>/Day02}"/>
+								</customData>
+							</Button>
+							<Button text="{oTimeshetModel>Column}" press="onMainNotePress" enabled="{= ${oTimeshetModel>/firstTimeUser/Wednesday} ?false:true}"
+								icon="{= ${oNotesModel>/Day03} !== ''?'sap-icon://notification-2':''}"
+								visible="{= ${oTimeshetModel>Column} === ${oTimeshetModel>/tableColumns/4/Column}}" type="Transparent">
+								<customData>
+									<core:CustomData key="Day03" value="{oNotesModel>/Day03}"/>
+								</customData>
+							</Button>
+							<Button text="{oTimeshetModel>Column}" press="onMainNotePress" enabled="{= ${oTimeshetModel>/firstTimeUser/Thursday} ?false:true}"
+								icon="{= ${oNotesModel>/Day04} !== ''?'sap-icon://notification-2':''}"
+								visible="{= ${oTimeshetModel>Column} === ${oTimeshetModel>/tableColumns/5/Column}}" type="Transparent">
+								<customData>
+									<core:CustomData key="Day04" value="{oNotesModel>/Day04}"/>
+								</customData>
+							</Button>
+							<Button text="{oTimeshetModel>Column}" press="onMainNotePress" enabled="{= ${oTimeshetModel>/firstTimeUser/Friday} ?false:true}"
+								icon="{= ${oNotesModel>/Day05} !== ''?'sap-icon://notification-2':''}"
+								visible="{= ${oTimeshetModel>Column} === ${oTimeshetModel>/tableColumns/6/Column}}" type="Transparent">
+								<customData>
+									<core:CustomData key="Day05" value="{oNotesModel>/Day05}"/>
+								</customData>
+							</Button>
+							<Button text="{oTimeshetModel>Column}" press="onMainNotePress" enabled="{= ${oTimeshetModel>/firstTimeUser/Saturday} ?false:true}"
+								icon="{= ${oNotesModel>/Day06} !== ''?'sap-icon://notification-2':''}"
+								visible="{= ${oTimeshetModel>Column} === ${oTimeshetModel>/tableColumns/7/Column}}" type="Transparent">
+								<customData>
+									<core:CustomData key="Day06" value="{oNotesModel>/Day06}"/>
+								</customData>
+							</Button>
+							<Button text="{oTimeshetModel>Column}" press="onMainNotePress" enabled="{= ${oTimeshetModel>/firstTimeUser/Sunday} ?false:true}"
+								icon="{= ${oNotesModel>/Day07} !== ''?'sap-icon://notification-2':''}"
+								visible="{= ${oTimeshetModel>Column} === ${oTimeshetModel>/tableColumns/8/Column}}" type="Transparent">
+								<customData>
+									<core:CustomData key="Day07" value="{oNotesModel>/Day07}"/>
+								</customData>
+							</Button>
+							<Text text="{oTimeshetModel>Column}"
+								visible="{= ${oTimeshetModel>Column} === 'Project Code' || ${oTimeshetModel>Column} === 'Resource Type'|| ${oTimeshetModel>Column} ==='Project Notes'|| ${oTimeshetModel>Column} ==='Sub Totals'?true:false}"/>
+						</VBox>
+						<footer>
+							<VBox>
+								<!--class="InputClass1"-->
+								<Input value="{oTimeshetModel>Total}"
+									visible="{= ${oTimeshetModel>Column} === 'Project Code' || ${oTimeshetModel>Column} === 'Resource Type'|| ${oTimeshetModel>Column} ==='Project Notes' || ${oTimeshetModel>Column} ==='Sub Totals'?false:true}"
+									editable="false" class="InputClass1" maxLength="5" type="Number" textAlign="Right" width="3.6em">
+									<customData>
+										<core:CustomData key="Day0valueState" value="Day0valueStateText"/>
+										<core:CustomData key="Day01" value="Day01"/>
+										<core:CustomData key="InputClass" value="{= ${oTimeshetModel>Total} >24 ?'Error':${oTimeshetModel>Total} >7.5 ?'Warning':'None'}"
+											writeToDom="true"/>
+									</customData>
+								</Input>
+								<Text text="{oTimeshetModel>Total}"
+									visible="{= ${oTimeshetModel>Column} === 'Project Code' || ${oTimeshetModel>Column} === 'Resource Type'|| ${oTimeshetModel>Column} ==='Project Notes'?true:false}"
+									textAlign="Right"/>
+								<Text text="{oTimeshetModel>Total}" class="SubTotalclass" visible="{= ${oTimeshetModel>Column} ==='Sub Totals'?true:false}"
+									textAlign="Right"/>
+								<!--<ToolbarSpacer width="0.5em"/>-->
+								<!--<HBox>-->
+								<!--	<Text text="" width="2.8em"/>-->
+								<!--<core:Icon color="#1C4C98" src="sap-icon://notes" press="onColumnNotePress"-->
+								<!--	visible="{= ${oTimeshetModel>Column} === 'Project Code' || ${oTimeshetModel>Column} === 'Resource Type' || ${oTimeshetModel>Column} === 'Sub Totals'|| ${oTimeshetModel>Column} ==='Notes'?false:true }">-->
+								<!--	<core:layoutData>-->
+								<!--		<FlexItemData growFactor="1"/>-->
+								<!--	</core:layoutData>-->
+								<!--</core:Icon>-->
+								<!--</HBox>-->
+								<!--			<Button icon="sap-icon://notes" press="onNotesPress" visible="{= ${oTimeshetModel>Column} === 'Project Code' || ${oTimeshetModel>Column} === 'Resource Type' || ${oTimeshetModel>Column} === 'Sub Totals'|| ${oTimeshetModel>Column} ==='Notes'?false:true }"/>-->
+							</VBox>
+						</footer>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<ObjectIdentifier title="{oTimeshetModel>Projectcode}" text="{oTimeshetModel>ProjectDesc}"/>
+							<ObjectIdentifier title="{oTimeshetModel>ResourceType}" text="{oTimeshetModel>TypeDesc}"/>
+							<!--CR#376 When I am getting combition of "V" & �D(Expacts)� from backend I am changing Vacation Row (D-NONPROJ-NONWORK ) to editable.-->
+							<Input value="{oTimeshetModel>Day01}" class="InputClass" valueState="{oTimeshetModel>Day0valueState}"
+								valueStateText="{oTimeshetModel>Day0valueStateText}"
+								editable="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X'|| ${oTimeshetModel>/firstTimeUser/Monday} || (${oTimeshetModel>WBSType}=== 'V' &amp;&amp; ${oUserModel>/EmpGroup} !== 'D') || ${oTimeshetModel>/user} === 'X' ?false:true }"
+								placeholder="HH:00" type="Number" maxLength="5" textAlign="Right" width="5em" change="onWeekDayChange">
+								<customData>
+									<core:CustomData key="Day0valueState" value="Day0valueStateText"/>
+									<core:CustomData key="Day01" value="Day01"/>
+									<core:CustomData key="InputClass"
+										value="{= ${oTimeshetModel>Day0valueState} === 'Error'?'Error':${oTimeshetModel>Day0valueState} === 'Warning'?'Warning':'None'}"
+										writeToDom="true"/>
+								</customData>
+							</Input>
+							<Input value="{oTimeshetModel>Day02}" class="InputClass" valueState="{oTimeshetModel>Day1valueState}"
+								valueStateText="{oTimeshetModel>Day1valueStateText}"
+								editable="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X' || ${oTimeshetModel>/firstTimeUser/Tuesday} || (${oTimeshetModel>WBSType}=== 'V' &amp;&amp; ${oUserModel>/EmpGroup} !== 'D') || ${oTimeshetModel>/user} === 'X' ?false:true}"
+								placeholder="HH:00" type="Number" maxLength="5" textAlign="Right" width="5em" change="onWeekDayChange">
+								<customData>
+									<core:CustomData key="Day1valueState" value="Day1valueStateText"/>
+									<core:CustomData key="Day02" value="Day02"/>
+									<core:CustomData key="InputClass"
+										value="{= ${oTimeshetModel>Day1valueState} === 'Error'?'Error':${oTimeshetModel>Day1valueState} === 'Warning'?'Warning':'None'}"
+										writeToDom="true"/>
+								</customData>
+							</Input>
+							<Input value="{oTimeshetModel>Day03}" class="InputClass" valueState="{oTimeshetModel>Day2valueState}"
+								valueStateText="{oTimeshetModel>Day2valueStateText}"
+								editable="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X'|| ${oTimeshetModel>/firstTimeUser/Wednesday} || (${oTimeshetModel>WBSType}=== 'V' &amp;&amp; ${oUserModel>/EmpGroup} !== 'D') || ${oTimeshetModel>/user} === 'X' ?false:true}"
+								placeholder="HH:00" type="Number" maxLength="5" textAlign="Right" width="5em" change="onWeekDayChange">
+								<customData>
+									<core:CustomData key="Day2valueState" value="Day2valueStateText"/>
+									<core:CustomData key="Day03" value="Day03"/>
+									<core:CustomData key="InputClass"
+										value="{= ${oTimeshetModel>Day2valueState} === 'Error'?'Error':${oTimeshetModel>Day2valueState} === 'Warning'?'Warning':'None'}"
+										writeToDom="true"/>
+								</customData>
+							</Input>
+							<Input value="{oTimeshetModel>Day04}" class="InputClass" valueState="{oTimeshetModel>Day3valueState}"
+								valueStateText="{oTimeshetModel>Day3valueStateText}"
+								editable="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X'|| ${oTimeshetModel>/firstTimeUser/Thursday} || (${oTimeshetModel>WBSType}=== 'V' &amp;&amp; ${oUserModel>/EmpGroup} !== 'D')|| ${oTimeshetModel>/user} === 'X' ?false:true}"
+								placeholder="HH:00" maxLength="5" type="Number" textAlign="Right" width="5em" change="onWeekDayChange">
+								<customData>
+									<core:CustomData key="Day3valueState" value="Day3valueStateText"/>
+									<core:CustomData key="Day04" value="Day04"/>
+									<core:CustomData key="InputClass"
+										value="{= ${oTimeshetModel>Day3valueState} === 'Error'?'Error':${oTimeshetModel>Day3valueState} === 'Warning'?'Warning':'None'}"
+										writeToDom="true"/>
+								</customData>
+							</Input>
+							<Input value="{oTimeshetModel>Day05}" class="InputClass" valueState="{oTimeshetModel>Day4valueState}"
+								valueStateText="{oTimeshetModel>Day4valueStateText}"
+								editable="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X'|| ${oTimeshetModel>/firstTimeUser/Friday} ||(${oTimeshetModel>WBSType}=== 'V' &amp;&amp; ${oUserModel>/EmpGroup} !== 'D') || ${oTimeshetModel>/user} === 'X' ?false:true}"
+								placeholder="HH:00" maxLength="5" type="Number" textAlign="Right" width="5em" change="onWeekDayChange">
+								<customData>
+									<core:CustomData key="Day4valueState" value="Day4valueStateText"/>
+									<core:CustomData key="Day05" value="Day05"/>
+									<core:CustomData key="InputClass"
+										value="{= ${oTimeshetModel>Day4valueState} === 'Error'?'Error':${oTimeshetModel>Day4valueState} === 'Warning'?'Warning':'None'}"
+										writeToDom="true"/>
+								</customData>
+							</Input>
+							<Input value="{oTimeshetModel>Day06}" class="InputClass" valueState="{oTimeshetModel>Day5valueState}"
+								valueStateText="{oTimeshetModel>Day5valueStateText}"
+								editable="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X'|| ${oTimeshetModel>/firstTimeUser/Saturday} || (${oTimeshetModel>WBSType}=== 'V' &amp;&amp; ${oUserModel>/EmpGroup} !== 'D') || ${oTimeshetModel>/user} === 'X' ?false:true}"
+								placeholder="HH:00" maxLength="5" type="Number" textAlign="Right" width="5em" change="onWeekDayChange">
+								<customData>
+									<core:CustomData key="Day5valueState" value="Day5valueStateText"/>
+									<core:CustomData key="Day06" value="Day06"/>
+									<core:CustomData key="InputClass"
+										value="{= ${oTimeshetModel>Day5valueState} === 'Error'?'Error':${oTimeshetModel>Day5valueState} === 'Warning'?'Warning':'None'}"
+										writeToDom="true"/>
+								</customData>
+							</Input>
+							<Input value="{oTimeshetModel>Day07}" class="InputClass" valueState="{oTimeshetModel>Day6valueState}"
+								valueStateText="{oTimeshetModel>Day6valueStateText}"
+								editable="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X'|| ${oTimeshetModel>/firstTimeUser/Sunday} || (${oTimeshetModel>WBSType}=== 'V' &amp;&amp; ${oUserModel>/EmpGroup} !== 'D') || ${oTimeshetModel>/user} === 'X' ?false:true}"
+								placeholder="HH:00" maxLength="5" type="Number" textAlign="Right" width="5em" change="onWeekDayChange">
+								<customData>
+									<core:CustomData key="Day6valueState" value="Day6valueStateText"/>
+									<core:CustomData key="Day07" value="Day07"/>
+									<core:CustomData key="InputClass"
+										value="{= ${oTimeshetModel>Day6valueState} === 'Error'?'Error':${oTimeshetModel>Day6valueState} === 'Warning'?'Warning':'None'}"
+										writeToDom="true"/>
+								</customData>
+							</Input>
+							<Text text="{oTimeshetModel>TotalHours}" textAlign="Right" width="4em" class="sTotalColor"/>
+							<!--<Button icon="sap-icon://notes" press="onNotesPress"/>-->
+							<core:Icon color="#1C4C98" src="{= ${oTimeshetModel>Note} === '' ?'sap-icon://add':'sap-icon://notification-2'}"
+								visible="{= ${oTimeshetModel>WBSType} === 'V' || ${oTimeshetModel>WBSType} === 'C' ?false:true}" press="onColumnNotePress">
+								<core:layoutData>
+									<FlexItemData growFactor="1"/>
+								</core:layoutData>
+								<core:customData>
+									<core:CustomData key="ProjectNote" value="{oTimeshetModel>Note}"/>
+								</core:customData>
+							</core:Icon>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+			<!--startttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt-->
+			<FlexBox visible="{device>/system/phone}" alignItems="Center" justifyContent="Center">
+				<items>
+					<ToolbarSpacer width="2em"/>
+					<core:Icon color="#1C4C98" src="sap-icon://navigation-left-arrow" visible="{=${oTimeshetModel>/PreviousButton}}" tooltip="{i18n>Previous}"
+						press="onPreviousPress"></core:Icon>
+					<ToolbarSpacer width="1em"/>
+					<Text text=" {oTimeshetModel>/StartDateMonth}-{oTimeshetModel>/EndDateMonth}" class="startEnddateColor"/>
+					<ToolbarSpacer width="1em"/>
+					<core:Icon color="#1C4C98" src="sap-icon://navigation-right-arrow" visible="{= ${oTimeshetModel>/NextButton}}" tooltip="{i18n>Next}"
+						press="onNextPress">
+						<core:layoutData>
+							<FlexItemData growFactor="1"/>
+						</core:layoutData>
+					</core:Icon>
+					<ToolbarSpacer width="2em"/>
+				</items>
+			</FlexBox>
+			<!--<HBox  visible="{device>/system/phone}" alignItems="Center">-->
+			<!--		<core:Icon color="#1C4C98" src="sap-icon://navigation-left-arrow"  tooltip="{i18n>Previous}" press="onPreviousPress">-->
+			<!--				</core:Icon>-->
+			<!--		<Text text=" {oTimeshetModel>/StartDateMonth}-{oTimeshetModel>/EndDateMonth}"/>-->
+			<!--			<core:Icon color="#1C4C98" src="sap-icon://navigation-right-arrow"  tooltip="{i18n>Next}" press="onNextPress">-->
+			<!--					<core:layoutData>-->
+			<!--						<FlexItemData growFactor="1"/>-->
+			<!--					</core:layoutData>-->
+			<!--				</core:Icon>-->
+			<!--</HBox>-->
+			<Table visible="{device>/system/phone}" inset="false" showNoData="false" mode="SingleSelectMaster" class="sapUiSizeCompact">
+				<columns>
+					<Column class="sapUiSizeCompact">
+						<VBox>
+							<Text text="MO"/>
+							<Text text="{path: 'oTimeshetModel>/tableColumns/2/Column', formatter: '.formatter.remove3char'}"/>
+						</VBox>
+					</Column>
+					<Column class="sapUiSizeCompact">
+						<VBox>
+							<Text text="TU"/>
+							<Text text="{path: 'oTimeshetModel>/tableColumns/3/Column', formatter: '.formatter.remove3char'}"/>
+						</VBox>
+						<!--<Text text="{oTimeshetModel>/tableColumns/3/Column}"/>-->
+					</Column>
+					<Column class="sapUiSizeCompact">
+						<VBox>
+							<Text text="WD"/>
+							<Text text="{path: 'oTimeshetModel>/tableColumns/4/Column', formatter: '.formatter.remove3char'}"/>
+						</VBox>
+						<!--<Text text="{oTimeshetModel>/tableColumns/4/Column}"/>-->
+					</Column>
+					<Column class="sapUiSizeCompact">
+						<VBox>
+							<Text text="TH"/>
+							<Text text="{path: 'oTimeshetModel>/tableColumns/5/Column', formatter: '.formatter.remove3char'}"/>
+						</VBox>
+						<!--<Text text="{oTimeshetModel>/tableColumns/5/Column}"/>-->
+					</Column>
+					<Column class="sapUiSizeCompact">
+						<VBox>
+							<Text text="FR"/>
+							<Text text="{path: 'oTimeshetModel>/tableColumns/6/Column', formatter: '.formatter.remove3char'}"/>
+						</VBox>
+						<!--<Text text="{oTimeshetModel>/tableColumns/6/Column}"/>-->
+					</Column>
+					<Column class="sapUiSizeCompact">
+						<VBox>
+							<Text text="SA"/>
+							<Text text="{path: 'oTimeshetModel>/tableColumns/7/Column', formatter: '.formatter.remove3char'}"/>
+						</VBox>
+						<!--<Text text="{oTimeshetModel>/tableColumns/7/Column}"/>-->
+					</Column>
+					<Column class="sapUiSizeCompact">
+						<VBox>
+							<Text text="SU"/>
+							<Text text="{path: 'oTimeshetModel>/tableColumns/8/Column', formatter: '.formatter.remove3char'}"/>
+						</VBox>
+						<!--<Text text="{oTimeshetModel>/tableColumns/8/Column}"/>-->
+					</Column>
+				</columns>
+			</Table>
+			<!--<Toolbar design="Solid" height="3em" class="border" visible="{device>/system/phone}">-->
+			<!--	<HBox>-->
+			<!--		<Input value="{oTimeshetModel>/tableColumns/2/Column}" width="3.5em" editable="false"/>-->
+			<!--			<TextArea  value="{oTimeshetModel>/tableColumns/3/Column}" width="3.5em" rows="2" editable="false"/>-->
+			<!--	</HBox>-->
+			<!--</Toolbar>-->
+			<Table visible="{device>/system/phone}" inset="false" items="{ path: 'oTimeshetModel>/tableItems' }" mode="SingleSelectMaster"
+				updateFinished="onUpdateFinished" class="sapUiSizeCompact mtable">
+				<!--<headerToolbar>-->
+				<!--	<OverflowToolbar>-->
+				<!--		<content>-->
+				<!--			<Button icon="sap-icon://add" tooltip="add" press="onProjectAddPress"/>-->
+				<!--			<Button icon="sap-icon://delete" tooltip="delete" press="onProjectDeletePress"/>-->
+				<!--			<Button icon="sap-icon://notes" tooltip="{i18n>Notes}" press="onMainNotePress">-->
+				<!--				<customData>-->
+				<!--					<core:CustomData key="MainNote" value="{oTimeshetModel>/Notes}"/>-->
+				<!--				</customData>-->
+				<!--			</Button>-->
+				<!--			<ToolbarSpacer/>-->
+				<!--		</content>-->
+				<!--	</OverflowToolbar>-->
+				<!--</headerToolbar>-->
+				<columns>
+					<Column demandPopin="true" popinDisplay="WithoutHeader" class="sapUiSizeCompact">
+						<Text text=""/>
+					</Column>
+					<!--<Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="WithoutHeader" class="sapUiSizeCompact">-->
+					<!--	<Text text=""/>-->
+					<!--</Column>-->
+					<Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="WithoutHeader" class="sapUiSizeCompact">
+						<Text text=""/>
+					</Column>
+					<Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline" class="sapUiSizeCompact">
+						<Text text="TotalHours"/>
+					</Column>
+					<Column width="2em" class="sapUiSizeCompact">
+						<Text text=""/>
+					</Column>
+					<Column width="2em" class="sapUiSizeCompact">
+						<Text text=""/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<Link text="{=${oTimeshetModel>Projectcode} === '' ?${oTimeshetModel>Projectcode} :${oTimeshetModel>Projectcode}}" press="onMobilTitlePress"/>
+							<!--<ObjectIdentifier title="{oTimeshetModel>Projectcode}" text="{oTimeshetModel>ProjectDesc}"/>-->
+							<!--<ObjectIdentifier title="{oTimeshetModel>ResourceType}" text="{oTimeshetModel>TypeDesc}"/>-->
+							<HBox>
+								<Input value="{oTimeshetModel>Day01}" class="MInputClass" valueState="{oTimeshetModel>Day0valueState}"
+									valueStateText="{oTimeshetModel>Day0valueStateText}"
+									editable="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X'|| ${oTimeshetModel>/firstTimeUser/Monday} || ${oTimeshetModel>/user} === 'X' || (${oTimeshetModel>WBSType}=== 'V' &amp;&amp; ${oUserModel>/EmpGroup} !== 'D') ?false:true}"
+									placeholder="HH:MM" type="Number" maxLength="5" textAlign="Right" change="onWeekDayChange">
+									<customData>
+										<core:CustomData key="Day0valueState" value="Day0valueStateText"/>
+										<core:CustomData key="Day01" value="Day01"/>
+										<core:CustomData key="MInputClass"
+											value="{= ${oTimeshetModel>Day0valueState} === 'Error'?'Error':${oTimeshetModel>Day0valueState} === 'Warning'?'Warning':'None'}"
+											writeToDom="true"/>
+									</customData>
+								</Input>
+								<Input value="{oTimeshetModel>Day02}" class="MInputClass" valueState="{oTimeshetModel>Day1valueState}"
+									valueStateText="{oTimeshetModel>Day1valueStateText}"
+									editable="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X'|| ${oTimeshetModel>/firstTimeUser/Tuesday} || ${oTimeshetModel>/user} === 'X' || (${oTimeshetModel>WBSType}=== 'V' &amp;&amp; ${oUserModel>/EmpGroup} !== 'D') ?false:true}"
+									placeholder="HH:MM" type="Number" maxLength="5" textAlign="Right" change="onWeekDayChange">
+									<customData>
+										<core:CustomData key="Day1valueState" value="Day1valueStateText"/>
+										<core:CustomData key="Day02" value="Day02"/>
+										<core:CustomData key="MInputClass"
+											value="{= ${oTimeshetModel>Day1valueState} === 'Error'?'Error':${oTimeshetModel>Day1valueState} === 'Warning'?'Warning':'None'}"
+											writeToDom="true"/>
+									</customData>
+								</Input>
+								<Input value="{oTimeshetModel>Day03}" class="MInputClass" valueState="{oTimeshetModel>Day2valueState}"
+									valueStateText="{oTimeshetModel>Day2valueStateText}"
+									editable="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X'||${oTimeshetModel>/firstTimeUser/Wednesday} || ${oTimeshetModel>/user} === 'X' || (${oTimeshetModel>WBSType}=== 'V' &amp;&amp; ${oUserModel>/EmpGroup} !== 'D') ?false:true}"
+									placeholder="HH:MM" type="Number" maxLength="5" textAlign="Right" change="onWeekDayChange">
+									<customData>
+										<core:CustomData key="Day2valueState" value="Day2valueStateText"/>
+										<core:CustomData key="Day03" value="Day03"/>
+										<core:CustomData key="MInputClass"
+											value="{= ${oTimeshetModel>Day2valueState} === 'Error'?'Error':${oTimeshetModel>Day2valueState} === 'Warning'?'Warning':'None'}"
+											writeToDom="true"/>
+									</customData>
+								</Input>
+								<Input value="{oTimeshetModel>Day04}" class="MInputClass" valueState="{oTimeshetModel>Day3valueState}"
+									valueStateText="{oTimeshetModel>Day3valueStateText}"
+									editable="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X'||${oTimeshetModel>/firstTimeUser/Thursday} || ${oTimeshetModel>/user} === 'X' || (${oTimeshetModel>WBSType}=== 'V' &amp;&amp; ${oUserModel>/EmpGroup} !== 'D') ?false:true}"
+									placeholder="HH:MM" maxLength="5" type="Number" textAlign="Right" change="onWeekDayChange">
+									<customData>
+										<core:CustomData key="Day3valueState" value="Day3valueStateText"/>
+										<core:CustomData key="Day04" value="Day04"/>
+										<core:CustomData key="MInputClass"
+											value="{= ${oTimeshetModel>Day3valueState} === 'Error'?'Error':${oTimeshetModel>Day3valueState} === 'Warning'?'Warning':'None'}"
+											writeToDom="true"/>
+									</customData>
+								</Input>
+								<Input value="{oTimeshetModel>Day05}" class="MInputClass" valueState="{oTimeshetModel>Day4valueState}"
+									valueStateText="{oTimeshetModel>Day4valueStateText}"
+									editable="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X'||${oTimeshetModel>/firstTimeUser/Friday} || ${oTimeshetModel>/user} === 'X' ||(${oTimeshetModel>WBSType}=== 'V' &amp;&amp; ${oUserModel>/EmpGroup} !== 'D') ?false:true}"
+									placeholder="HH:MM" maxLength="5" type="Number" textAlign="Right" change="onWeekDayChange">
+									<customData>
+										<core:CustomData key="Day4valueState" value="Day4valueStateText"/>
+										<core:CustomData key="Day05" value="Day05"/>
+										<core:CustomData key="MInputClass"
+											value="{= ${oTimeshetModel>Day4valueState} === 'Error'?'Error':${oTimeshetModel>Day4valueState} === 'Warning'?'Warning':'None'}"
+											writeToDom="true"/>
+									</customData>
+								</Input>
+								<Input value="{oTimeshetModel>Day06}" class="MInputClass" valueState="{oTimeshetModel>Day5valueState}"
+									valueStateText="{oTimeshetModel>Day5valueStateText}"
+									editable="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X'||${oTimeshetModel>/firstTimeUser/Saturday} || ${oTimeshetModel>/user} === 'X' || (${oTimeshetModel>WBSType}=== 'V' &amp;&amp; ${oUserModel>/EmpGroup} !== 'D') ?false:true}"
+									placeholder="HH:MM" maxLength="5" type="Number" textAlign="Right" change="onWeekDayChange">
+									<customData>
+										<core:CustomData key="Day5valueState" value="Day5valueStateText"/>
+										<core:CustomData key="Day06" value="Day06"/>
+										<core:CustomData key="MInputClass"
+											value="{= ${oTimeshetModel>Day5valueState} === 'Error'?'Error':${oTimeshetModel>Day5valueState} === 'Warning'?'Warning':'None'}"
+											writeToDom="true"/>
+									</customData>
+								</Input>
+								<Input value="{oTimeshetModel>Day07}" class="MInputClass" valueState="{oTimeshetModel>Day6valueState}"
+									valueStateText="{oTimeshetModel>Day6valueStateText}"
+									editable="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X'||${oTimeshetModel>/firstTimeUser/Sunday} || ${oTimeshetModel>/user} === 'X' ||(${oTimeshetModel>WBSType}=== 'V' &amp;&amp; ${oUserModel>/EmpGroup} !== 'D') ?false:true}"
+									placeholder="HH:MM" maxLength="5" type="Number" textAlign="Right" change="onWeekDayChange">
+									<customData>
+										<core:CustomData key="Day6valueState" value="Day6valueStateText"/>
+										<core:CustomData key="Day07" value="Day07"/>
+										<core:CustomData key="MInputClass"
+											value="{= ${oTimeshetModel>Day6valueState} === 'Error'?'Error':${oTimeshetModel>Day6valueState} === 'Warning'?'Warning':'None'}"
+											writeToDom="true"/>
+									</customData>
+								</Input>
+							</HBox>
+							<Text text="{oTimeshetModel>TotalHours}" textAlign="Right" width="4em" class="sTotalColor"/>
+							<!--<Button icon="sap-icon://notes" press="onNotesPress"/>-->
+							<core:Icon color="#1C4C98" src="{= ${oTimeshetModel>Note} === '' ?'sap-icon://add-activity-2':'sap-icon://activity-2'}"
+								visible="{= ${oTimeshetModel>WBSType} === 'V' || ${oTimeshetModel>WBSType} === 'C' ?false:true}" press="onColumnNotePress">
+								<core:layoutData>
+									<FlexItemData growFactor="1"/>
+								</core:layoutData>
+								<core:customData>
+									<core:CustomData key="ProjectNote" value="{oTimeshetModel>Note}"/>
+								</core:customData>
+							</core:Icon>
+							<core:Icon color="red" src="sap-icon://delete"
+								visible="{= ${oTimeshetModel>WBSType} === 'V' || ${oTimeshetModel>WBSType} === 'C' || ${oTimeshetModel>WBSType} === 'A' || ${oTimeshetModel>/tableItems/0/Lock} === 'X' ?false:true}"
+								press="onProjectDeletePress">
+								<core:layoutData>
+									<FlexItemData growFactor="1"/>
+								</core:layoutData>
+							</core:Icon>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+			<!--enddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd-->
+			<Toolbar design="Solid" height="0.2em" class="border" visible="false"></Toolbar>
+			<Toolbar design="Solid" height="3em" class="background" visible="false">
+				<ObjectIdentifier title="Daily Notes" text=""/>
+				<Text text="" textAlign="Right" width="19em"/>
+				<!--<Text text=""  textAlign="Right"  width="13em"/>-->
+				<ToolbarSpacer width="6em"/>
+				<core:Icon color="#1C4C98" src="sap-icon://notes" press="onColumnNotePress"
+					visible="{= ${oTimeshetModel>Column} === 'Project Code' || ${oTimeshetModel>Column} === 'Resource Type' || ${oTimeshetModel>Column} === 'Sub Totals'|| ${oTimeshetModel>Column} ==='Project Notes'?false:true }">
+					<core:layoutData>
+						<FlexItemData growFactor="1"/>
+					</core:layoutData>
+					<core:customData>
+						<core:CustomData key="Day01" value="{oNotesModel>/Day01}"/>
+					</core:customData>
+				</core:Icon>
+				<ToolbarSpacer width="6em"/>
+				<core:Icon color="#1C4C98" src="sap-icon://notes" press="onColumnNotePress"
+					visible="{= ${oTimeshetModel>Column} === 'Project Code' || ${oTimeshetModel>Column} === 'Resource Type' || ${oTimeshetModel>Column} === 'Sub Totals'|| ${oTimeshetModel>Column} ==='Project Notes'?false:true }">
+					<core:layoutData>
+						<FlexItemData growFactor="1"/>
+					</core:layoutData>
+					<core:customData>
+						<core:CustomData key="Day02" value="{oNotesModel>/Day02}"/>
+					</core:customData>
+				</core:Icon>
+				<ToolbarSpacer width="6em"/>
+				<core:Icon color="#1C4C98" src="sap-icon://notes" press="onColumnNotePress"
+					visible="{= ${oTimeshetModel>Column} === 'Project Code' || ${oTimeshetModel>Column} === 'Resource Type' || ${oTimeshetModel>Column} === 'Sub Totals'|| ${oTimeshetModel>Column} ==='Project Notes'?false:true }">
+					<core:layoutData>
+						<FlexItemData growFactor="1"/>
+					</core:layoutData>
+					<core:customData>
+						<core:CustomData key="Day03" value="{oNotesModel>/Day03}"/>
+					</core:customData>
+				</core:Icon>
+				<ToolbarSpacer width="5em"/>
+				<core:Icon color="#1C4C98" src="sap-icon://notes" press="onColumnNotePress"
+					visible="{= ${oTimeshetModel>Column} === 'Project Code' || ${oTimeshetModel>Column} === 'Resource Type' || ${oTimeshetModel>Column} === 'Sub Totals'|| ${oTimeshetModel>Column} ==='Project Notes'?false:true }">
+					<core:layoutData>
+						<FlexItemData growFactor="1"/>
+					</core:layoutData>
+					<core:customData>
+						<core:CustomData key="Day04" value="{oNotesModel>/Day04}"/>
+					</core:customData>
+				</core:Icon>
+				<ToolbarSpacer width="5em"/>
+				<core:Icon color="#1C4C98" src="sap-icon://notes" press="onColumnNotePress"
+					visible="{= ${oTimeshetModel>Column} === 'Project Code' || ${oTimeshetModel>Column} === 'Resource Type' || ${oTimeshetModel>Column} === 'Sub Totals'|| ${oTimeshetModel>Column} ==='Project Notes'?false:true }">
+					<core:layoutData>
+						<FlexItemData growFactor="1"/>
+					</core:layoutData>
+					<core:customData>
+						<core:CustomData key="Day05" value="{oNotesModel>/Day05}"/>
+					</core:customData>
+				</core:Icon>
+				<ToolbarSpacer width="5em"/>
+				<core:Icon color="#1C4C98" src="sap-icon://notes" press="onColumnNotePress"
+					visible="{= ${oTimeshetModel>Column} === 'Project Code' || ${oTimeshetModel>Column} === 'Resource Type' || ${oTimeshetModel>Column} === 'Sub Totals'|| ${oTimeshetModel>Column} ==='Project Notes'?false:true }">
+					<core:layoutData>
+						<FlexItemData growFactor="1"/>
+					</core:layoutData>
+					<core:customData>
+						<core:CustomData key="Day06" value="{oNotesModel>/Day06}"/>
+					</core:customData>
+				</core:Icon>
+				<ToolbarSpacer width="5em"/>
+				<core:Icon color="#1C4C98" src="sap-icon://notes" press="onColumnNotePress"
+					visible="{= ${oTimeshetModel>Column} === 'Project Code' || ${oTimeshetModel>Column} === 'Resource Type' || ${oTimeshetModel>Column} === 'Sub Totals'|| ${oTimeshetModel>Column} ==='Project Notes'?false:true }">
+					<core:layoutData>
+						<FlexItemData growFactor="1"/>
+					</core:layoutData>
+					<core:customData>
+						<core:CustomData key="Day07" value="{oNotesModel>/Day07}"/>
+					</core:customData>
+				</core:Icon>
+				<ToolbarSpacer width="4em"/>
+				<Text text="" textAlign="Right" width="3em"/>
+				<Text text="" textAlign="Right" width="3em"/>
+			</Toolbar>
+		</content>
+		<footer>
+			<OverflowToolbar>
+				<Button text="{oTimeshetModel>/tableColumns/9/Total}" visible="{device>/system/phone}"
+					type="{= ${oTimeshetModel>/tableColumns/9/Total} >= 37.5 ? 'Accept' : 'Reject' }"/>
+				<Button tooltip="{i18n>Help}" icon="sap-icon://sys-help" type="Emphasized" press="onHelpIconPress" visible="{= !${device>/system/phone} }"/>
+				<Button icon="sap-icon://add" tooltip="Add" press="onProjectAddPress"
+					visible="{= (${device>/system/phone} &amp;&amp; ${oTimeshetModel>/tableItems/0/Lock} !== 'X') ? true : false}"/>
+				<!--visible="{device>/system/phone}"-->
+				<!--<Button visible="{device>/system/phone}" icon="{= ${oTimeshetModel>/VacationNotes} === '' ?'sap-icon://notes':'sap-icon://notification-2'}" type="Accept"  tooltip="{i18n>WeeklyNotes}" press="onMainNotePress">-->
+				<!--			<customData>-->
+				<!--				<core:CustomData key="MainNote" value="{oTimeshetModel>/VacationNotes}"/>-->
+				<!--			</customData>-->
+				<!--		</Button>-->
+				<Button visible="{= ${oTimeshetModel>/VacationNotesVisible} &amp;&amp; ${device>/system/phone} }"
+					icon="{= ${oTimeshetModel>/VacationNotes} === '' ?'sap-icon://notes':'sap-icon://notification-2'}"
+					type="{= ${oTimeshetModel>/VacationNotes} === '' ?'Accept':'Emphasized'}" tooltip="{i18n>WeeklyNotes}" press="onMainNotePress">
+					<customData>
+						<core:CustomData key="MainNote" value="{oTimeshetModel>/VacationNotes}"/>
+					</customData>
+				</Button>
+				<ToolbarSpacer/>
+				<Button tooltip="{i18n>Recall}"
+					visible="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X' &amp;&amp; ${oTimeshetModel>/user} !== 'X' ? true : false }" icon="sap-icon://undo"
+					type="Reject" press="onSavePress">
+					<customData>
+						<core:CustomData key="Recall" value="Recall"/>
+					</customData>
+				</Button>
+				<Button tooltip="{i18n>Submit}" icon="sap-icon://sys-enter-2" type="Accept"
+					visible="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X' || ${oTimeshetModel>/user} === 'X' ? false : true }" press="onSubmitPress">
+					<customData>
+						<core:CustomData key="Submit" value="Submit"/>
+					</customData>
+				</Button>
+				<Button tooltip="{i18n>Save}" visible="{= ${oTimeshetModel>/tableItems/0/Lock} === 'X' || ${oTimeshetModel>/user} === 'X' ? false : true }"
+					icon="sap-icon://save" type="Accept" press="onSavePress">
+					<customData>
+						<core:CustomData key="Save" value="Save"/>
+					</customData>
+				</Button>
+				<Button tooltip="{i18n>Previous}"
+					visible="{= (!${device>/system/phone} &amp;&amp; ${oTimeshetModel>/PreviousButton}) &amp;&amp; ${oTimeshetModel>/user} !== 'X' }"
+					icon="sap-icon://arrow-left" type="Emphasized" press="onPreviousPress"/>
+				<Button tooltip="{i18n>Next}"
+					visible="{= (!${device>/system/phone} &amp;&amp; ${oTimeshetModel>/NextButton}) &amp;&amp; ${oTimeshetModel>/user} !== 'X' }"
+					icon="sap-icon://arrow-right" type="Emphasized" press="onNextPress"/>
+				<Button tooltip="{i18n>History}" visible="{= !${device>/system/phone} &amp;&amp; ${oTimeshetModel>/user} !== 'X' }"
+					icon="sap-icon://customer-history" type="Emphasized" press="onHistoryPress"/>
+			</OverflowToolbar>
+		</footer>
+	</Page>
+</mvc:View>

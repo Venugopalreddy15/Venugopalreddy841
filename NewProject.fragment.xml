@@ -1,0 +1,36 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<Dialog class="sapUiContentPadding">
+		<customHeader>
+			<Toolbar>
+				<ToolbarSpacer width="3em"/>
+				<Title text="{i18n>TimeEntry}" class="textColor"/>
+				<ToolbarSpacer/>
+				<Button tooltip="{i18n>Cancel}" icon="sap-icon://decline" type="Reject" press="onTimeEntryCancelPress"/>
+			</Toolbar>
+		</customHeader>
+		<content>
+			<f:SimpleForm editable="true" layout="ResponsiveLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12"
+				adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+				singleContainerFullSize="false">
+				<f:content>
+					<Label text="{i18n>ProjectCode}" required="true"/>
+					<!--CR#376 Added valueHelpOnly property to restrict user manual entry on 08/19/2020-->
+					<Input value="{oNewProjectModel>/ProjectCode}" valueHelpOnly="true"  showSuggestion="true" showValueHelp="true" valueHelpRequest="handleProjectValueHelp"></Input>
+					<Label text="{i18n>ResourceType}" required="true"/>
+					<ComboBox selectedKey="{oNewProjectModel>/ResourceType}"  items="{ path: '/Sch_Resource_TypeSet'}">
+						 <!--sorter: { path: 'ResourceName' }-->
+						<items>
+							<core:Item text="{ResourceName}" key="{ResourceType}"/>
+						</items>
+					</ComboBox>
+				</f:content>
+			</f:SimpleForm>
+		</content>
+		<buttons>
+			<Button text="{i18n>Add}" press="onTimeEntryOkPress"/>
+		</buttons>
+		<endButton>
+			<Button text="{i18n>Cancel}" press="onTimeEntryCancelPress"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

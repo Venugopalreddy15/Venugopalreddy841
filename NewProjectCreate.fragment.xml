@@ -1,0 +1,157 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<Dialog title="{i18n>Projects}" class="sapUiSizeCompact textColor" contentWidth="950px">
+		<content>
+			<Panel expandable="true" headerText="WBS Search" class="sapUiSizeCompact backgroundProjectSearch">
+				<content>
+					<HBox visible="false">
+						<f:SimpleForm editable="true" layout="ResponsiveLayout" class="sapUiSizeCompact" labelSpanXL="4" labelSpanL="4" labelSpanM="12"
+							labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="3" columnsM="3"
+							singleContainerFullSize="false">
+							<f:content>
+								<core:Title text=""/>
+								<Label text="WBS"/>
+								<Input value="{oFileterModel>/WBS}"/>
+								<core:Title text=""/>
+								<Label text="Description"/>
+								<Input value="{oFileterModel>/Description}"/>
+								<core:Title text=""/>
+								<Label text="Project definition"/>
+								<Input value="{oFileterModel>/ProjectDefination}"/>
+							</f:content>
+						</f:SimpleForm>
+						<Button text="Go" press="onGoSearchPress"/>
+						<ToolbarSpacer width="0.5em"/>
+						<Button text="Refresh" press="onRefreshSearchPress"/>
+					</HBox>
+					<VBox visible="{= !${device>/system/phone} }">
+						<HBox alignContent="Start" alignItems="Start" justifyContent="Start">
+							<HBox alignContent="Center" alignItems="Center" justifyContent="End">
+								<Label text="WBS Code :" textDirection="RTL"/>
+								<Input value="{oFileterModel>/WBS}"/>
+							</HBox>
+							<ToolbarSpacer width="0.5em"/>
+							<HBox alignContent="Center" alignItems="Center" justifyContent="End">
+								<Label text="Description :" textDirection="RTL"/>
+								<Input value="{oFileterModel>/Description}"/>
+							</HBox >
+							<ToolbarSpacer width="0.5em"/>
+							<HBox alignContent="Center" alignItems="Center" justifyContent="End">
+								<Label text=" Definition : " textDirection="RTL"/>
+								<Input value="{oFileterModel>/ProjectDefination}"/>
+							</HBox>
+						</HBox>
+						<HBox alignItems="Center" justifyContent="End">
+							<Button text="Go" press="onGoSearchPress"/>
+							<ToolbarSpacer width="0.5em"/>
+							<Button text="Refresh" press="onRefreshSearchPress"/>
+						</HBox>
+					</VBox>
+					<VBox visible="{= ${device>/system/phone} }">
+						<VBox alignContent="Center" alignItems="Center" justifyContent="End">
+							<HBox alignContent="Center" alignItems="Center" justifyContent="End">
+								<Label text="WBS Code :" textDirection="RTL"/>
+								<Input value="{oFileterModel>/WBS}"/>
+							</HBox>
+							<HBox alignContent="Center" alignItems="Center" justifyContent="End">
+								<Label text="Description :" textDirection="RTL"/>
+								<Input value="{oFileterModel>/Description}"/>
+							</HBox >
+							<HBox alignContent="Center" alignItems="Center" justifyContent="End">
+								<Label text=" Definition :" textDirection="RTL"/>
+								<Input value="{oFileterModel>/ProjectDefination}"/>
+							</HBox>
+						</VBox>
+						<HBox alignItems="Center" justifyContent="End">
+							<Button text="Go" press="onGoSearchPress"/>
+							<ToolbarSpacer width="0.5em"/>
+							<Button text="Refresh" press="onRefreshSearchPress"/>
+						</HBox>
+					</VBox>
+				</content>
+			</Panel>
+			<!--items="{path: 'ReportModel>/Sch_ProjectCodeSet'}"-->
+			<Table visible="{= !${device>/system/phone} }" id="idWBSTable" items="{path: '/Sch_ProjectCode_SearchSet'}" inset="false"
+				mode="SingleSelectMaster" growing="true" growingThreshold="100" selectionChange="onProjectSelect" class="sapUiSizeCompact">
+				<columns>
+					<Column width="5em">
+						<Text text="{i18n>Level}"/>
+					</Column>
+					<Column width="20em" demandPopin="true" popinDisplay="Inline">
+						<Text text="{i18n>WBSCode}"/>
+					</Column>
+					<!--<Column  width="16em" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">-->
+					<!--	<Text text="{i18n>WBSDescription}"/>-->
+					<!--</Column>-->
+					<!--<Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">-->
+					<!--	<Text text="{i18n>Level}"/>-->
+					<!--</Column>-->
+					<Column width="20em" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+						<Text text="{i18n>ProjectDefination}"/>
+					</Column>
+					<Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+						<Text text="{i18n>TherapeuticArea}"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem >
+						<cells>
+							<Text text="{Level}"/>  
+							<ObjectIdentifier title="{ProjectCode}" text="{Txt}"/>
+							<!--<Text text="{ReportModel>ProjectCode}"/>-->
+							<!--<Text text="{ReportModel>Txt}"/>-->
+							<ObjectIdentifier title="{Project_Def}" />
+							<!--<Text text="{ReportModel>Project_Def}"/>-->
+							<ObjectIdentifier title="{T_Disc}" text="{T_Area}"/>
+							<!--<Text text="{ReportModel>T_Area}"/>-->
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+			<List id="MidWBSTable" visible="{device>/system/phone}" showSeparators="None" inset="false" mode="SingleSelectMaster" growing="true"
+				growingThreshold="100" selectionChange="onProjectSelect" class="sapUiSizeCompact" items="{path: '/Sch_ProjectCode_SearchSet'}">
+				<CustomListItem >
+					<!--class="backgroundcolor"-->
+					<!--backgroundDesign="{= ${Level} === ' 2' ?'Transparent':'Solid'}"-->
+					<Panel expandable="true" headerText="{= ${Txt} === '' ?${ProjectCode}:${Txt}}" class="sapUiResponsiveMargin">
+						<content class="listborder">
+							<HBox>
+								<Label text="Level:"/>
+								<Text text="{Level}"/>
+							</HBox>
+							<HBox>
+								<Label text="WBSCode:"/>
+								<Text text="{ProjectCode}"/>
+							</HBox>
+							<HBox>
+								<Label text="WBSDescription:"/>
+								<Text text="{Txt}"/>
+							</HBox>
+							<HBox>
+								<Label text="ProjectDefination:"/>
+								<Text text="{Project_Def}"/>
+							</HBox>
+							<HBox>
+								<Label text="ProjectDefination Desc:"/>
+								<Text text="{Proj_Def_Des}"/>
+							</HBox>
+							<HBox>
+								<Label text="TherapeuticArea:"/>
+								<Text text="{T_Area}"/>
+							</HBox>
+							<HBox>
+								<Label text="TherapeuticArea:"/>
+								<Text text="{T_Disc}"/>
+							</HBox>
+						</content>
+					</Panel>
+					<customData>
+						<core:CustomData key="backgroundColor" value="{= ${Level} === ' 1' ?'one':'two'}" writeToDom="true"/>
+					</customData>
+				</CustomListItem>
+			</List>
+		</content>
+		<beginButton>
+			<Button text="{i18n>Cancel}" type="Emphasized" press="onProjectCancelPress"/>
+		</beginButton>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,7 @@
+<mvc:View controllerName="ProjectTime.ZProjectTime.controller.App" displayBlock="true" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc">
+	<!--#91C8F6 #427CAC-->
+	<!--backgroundColor="{= ${device>/system/phone}?'#EFF4F9':''}"-->
+	<!--backgroundImage="{= !${device>/system/phone}?${oImageModel>/image}:''}"-->
+	<App id="app" backgroundRepeat="true" backgroundColor="{= ${device>/system/phone}?'#EFF4F9':''}"
+		backgroundImage="{= !${device>/system/phone}?${oImageModel>/image}:''}" busy="{appView>/busy}" busyIndicatorDelay="{appView>/delay}"/>
+</mvc:View>
